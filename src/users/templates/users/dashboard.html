@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    Hello, {{ user.username|default:"Guest" }}!
+    <hr />
+    {% include "registration/_logout.html" %} 
+{% endblock content %}

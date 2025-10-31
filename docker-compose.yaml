@@ -1,0 +1,10 @@
+
+services:
+  run_trainer:
+    build: .
+
+    volumes:
+      - ./src:/app/src
+    
+    ports:
+      - 8000:80
