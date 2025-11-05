@@ -4,7 +4,20 @@ services:
     build: .
 
     volumes:
+       
+      # Named volumes to persist node_modules and build artifacts but avoid them being copied to host machine
+      - node_modules_volume:/app/src/frontend/node_modules
+      - dist_volume:/app/src/frontend/dist
+
       - ./src:/app/src
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - ./requirements.txt:/app/requirements.txt
+
     
     ports:
       - 8000:80
+      - 3000:81
+volumes:
+  node_modules_volume:
+  dist_volume:

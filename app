@@ -6,19 +6,26 @@ elif [ $1 == "down" ]; then
     docker-compose down
 
 elif [ $1 == "build" ]; then
+    docker build -t pynode:1.0.0 -f Dockerfile.pynode .
     docker-compose build run_trainer
 
 elif [ $1 == "bash" ]; then
     docker-compose exec -it run_trainer bash
 
-elif [ $1 == "start" ]; then
-    docker-compose exec -it run_trainer python ./src/manage.py runserver 0.0.0.0:80
+elif [ $1 == "start-back" ]; then
+    docker-compose exec run_trainer python ./src/backend/manage.py runserver 0.0.0.0:80
+
+elif [ $1 == "build-front" ]; then
+    docker-compose exec run_trainer npm run build
+
+elif [ $1 == "start-front" ]; then
+    docker-compose exec run_trainer npm run dev
 
 elif [ $1 == "manage" ]; then
     shift
-    docker compose exec -it run_trainer python ./src/manage.py $@
+    docker compose exec run_trainer python ./src/backend/manage.py $@
 
 elif [ $1 == "sqlite" ]; then
-    sqlite3 ./src/db.sqlite3
+    sqlite3 ./src/backend/db.sqlite3
 
 fi
