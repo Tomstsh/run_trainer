@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 81 ./src/frontend",
+    "dev": "vite -d --host 0.0.0.0 --port 81 ./src/frontend",
     "build": "vite build ./src/frontend",
     "lint": "eslint .",
     "preview": "vite preview"

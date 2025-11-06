@@ -12,14 +12,14 @@ elif [ $1 == "build" ]; then
 elif [ $1 == "bash" ]; then
     docker-compose exec -it run_trainer bash
 
-elif [ $1 == "start-back" ]; then
+elif [ $1 == "start" ]; then
     docker-compose exec run_trainer python ./src/backend/manage.py runserver 0.0.0.0:80
 
-elif [ $1 == "build-front" ]; then
+elif [ $1 == "build-app" ]; then
     docker-compose exec run_trainer npm run build
 
-elif [ $1 == "start-front" ]; then
-    docker-compose exec run_trainer npm run dev
+elif [ $1 == "start-dev" ]; then
+    docker-compose exec -e DEV=True run_trainer npm run dev
 
 elif [ $1 == "manage" ]; then
     shift
@@ -27,5 +27,9 @@ elif [ $1 == "manage" ]; then
 
 elif [ $1 == "sqlite" ]; then
     sqlite3 ./src/backend/db.sqlite3
+
+elif [ $1 ==  "pip" ]; then
+    shift
+    docker compose exec run_trainer pip $@
 
 fi

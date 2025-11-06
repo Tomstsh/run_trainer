@@ -3,6 +3,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
+from rest_framework import permissions, viewsets
+
+from .models import CustomUser
+from .serializers import CustomUserSerializer
 from .forms import CustomUserCreationForm
 
 # Create your views here.
@@ -29,3 +33,9 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+class CustomUserViewSet(viewsets.ModelViewSet):
+    """ API endpoint that allows users to be viewed"""
+    queryset = CustomUser.objects.all().order_by('-date_joined')
+    serializer_class = CustomUserSerializer
+    permission_classes = [permissions.IsAdminUser]
