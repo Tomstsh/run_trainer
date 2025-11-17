@@ -19,7 +19,7 @@ def custom_login(request):
     if request.user.is_authenticated:
         return redirect(reverse(dashboard))
     else:
-        return login(request)
+        return redirect('login')  # Redirect to the login page
 
 def register(request):
     if request.user.is_authenticated:

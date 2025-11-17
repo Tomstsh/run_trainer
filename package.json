@@ -6,12 +6,12 @@
   "scripts": {
     "dev": "vite -d --host 0.0.0.0 --port 81 ./src/frontend",
     "build": "vite build ./src/frontend",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
