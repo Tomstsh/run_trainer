@@ -1,14 +1,28 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext.jsx';
 
 function LoginPage() {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = (data) => {
-      console.log(data);
-      alert(`Username: ${data.username}\nPassword: ${data.password}`);
+    const navigate = useNavigate();
+
+    const { login} = useAuth();
+
+    const handleSubmit = async (data) => {
+        setIsSubmitting(true);
+        try {
+          await login(data.username, data.password);
+          navigate('/')
+        } catch (error) {
+          console.error("Login error:", error);
+        } finally {
+          setIsSubmitting(false);
+        }
     }
 
     const handleChange = (e) => {
@@ -20,8 +34,6 @@ function LoginPage() {
     }
     return (
         <div>
-          <h1>Welcome!</h1>
-  
           <h2>Login</h2>
           <form onSubmit={(e) => {
             e.preventDefault();
@@ -35,7 +47,7 @@ function LoginPage() {
               <label htmlFor="id_password">Password:</label>
               <input required type="password" name="password" id="id_password" value={formData.password} onChange={handleChange}/>
             </p>
-            <button type="submit">Login</button>
+            <button type="submit" disabled={isSubmitting}>{ isSubmitting ? "Signing in..." : "Login"}</button>
             <input type="hidden" name="next" value="/users/dashboard/"/>
           </form>
           <p>

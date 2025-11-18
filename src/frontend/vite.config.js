@@ -12,6 +12,9 @@ export default defineConfig({
   base,
   plugins: [react()],
   server: {
+    proxy: {
+      '/api': 'http://localhost:80',
+    },
     watch:{
       usePolling: true
     }
