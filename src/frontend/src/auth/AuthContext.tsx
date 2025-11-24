@@ -1,14 +1,21 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-const AuthContext = createContext();
+type AuthContextType = {
+  user: any;
+  login: (username: string, password: string) => Promise<boolean>;
+  logout: () => void;
+  loading: boolean;
+};
+
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
-    return useContext(AuthContext);
+    return useContext(AuthContext)!;
 }
 
-export const AuthProvider = ({ children }) => {
-    const [ user, setUser ] = useState(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const [ user, setUser ] = useState<any>(null);
     const [ loading, setLoading ] = useState(true);
 
     useEffect(() => {
@@ -20,7 +27,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const login = async (username, password) => {
+    const login = async (username: string, password: string) => {
         try {
             const response = await axios.post('/api/token/', { username, password});
             const { access, refresh } = response.data;
@@ -42,7 +49,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
-    const value = {
+    const value: AuthContextType = {
         user,
         login,
         logout,

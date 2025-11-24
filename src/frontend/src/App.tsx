@@ -1,11 +1,8 @@
-import { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
-import { AuthProvider } from './auth/AuthContext.jsx'
-import PrivateRoutes from './auth/PrivateRoutes.jsx'
-import HomePage from './pages/HomePage.jsx'
-import LoginPage from './pages/LoginPage.jsx'
-
-//import './App.css'
+import { AuthProvider } from './auth/AuthContext'
+import PrivateRoutes from './auth/PrivateRoutes'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
 
 function App() {
   return (

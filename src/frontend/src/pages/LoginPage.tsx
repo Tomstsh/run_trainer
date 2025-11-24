@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext.jsx';
+import { useAuth } from '../auth/AuthContext';
 
 function LoginPage() {
     const [formData, setFormData] = useState({
@@ -11,9 +11,9 @@ function LoginPage() {
 
     const navigate = useNavigate();
 
-    const { login} = useAuth();
+    const { login } = useAuth();
 
-    const handleSubmit = async (data) => {
+    const handleSubmit = async (data: { username: string; password: string; }) => {
         setIsSubmitting(true);
         try {
           await login(data.username, data.password);
@@ -25,7 +25,7 @@ function LoginPage() {
         }
     }
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -41,7 +41,7 @@ function LoginPage() {
           }}>
             <p>
               <label htmlFor="id_username">Username:</label>
-              <input required type="text" name="username" id="id_username" value={formData.email} onChange={handleChange}/>
+              <input required type="text" name="username" id="id_username" value={formData.username} onChange={handleChange}/>
             </p>
             <p>
               <label htmlFor="id_password">Password:</label>
