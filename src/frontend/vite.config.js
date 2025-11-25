@@ -1,3 +1,5 @@
+import path from 'path'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dns from 'node:dns'
@@ -10,7 +12,12 @@ if (!process.env.DEV) {
 // https://vite.dev/config/
 export default defineConfig({
   base,
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   server: {
     proxy: {
       '/api': 'http://localhost:80',

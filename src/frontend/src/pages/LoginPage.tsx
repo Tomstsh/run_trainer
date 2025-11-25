@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { Button } from '../components/ui/button';
 
 function LoginPage() {
     const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ function LoginPage() {
         }
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -35,7 +36,7 @@ function LoginPage() {
     return (
         <div>
           <h2>Login</h2>
-          <form onSubmit={(e) => {
+          <form onSubmit={(e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             handleSubmit(formData);
           }}>
@@ -47,7 +48,8 @@ function LoginPage() {
               <label htmlFor="id_password">Password:</label>
               <input required type="password" name="password" id="id_password" value={formData.password} onChange={handleChange}/>
             </p>
-            <button type="submit" disabled={isSubmitting}>{ isSubmitting ? "Signing in..." : "Login"}</button>
+            <Button disabled={isSubmitting}>{ isSubmitting ? "Signing in..." : "Login"}</Button>
+            <Button variant="outline">Boop</Button>
             <input type="hidden" name="next" value="/users/dashboard/"/>
           </form>
           <p>
