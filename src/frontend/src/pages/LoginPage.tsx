@@ -1,9 +1,20 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { Bot } from "lucide-react";
+import { ChangeEvent, FormEvent, ComponentProps, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@/components/ui/field";
+import { cn } from "@/lib/utils";
 
-function LoginPage() {
+function LoginPage({
+  className,
+  ...props
+}: ComponentProps<"div">) {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -34,29 +45,35 @@ function LoginPage() {
         });
     }
     return (
-        <div>
-          <h2>Login</h2>
-          <form onSubmit={(e: FormEvent<HTMLFormElement>) => {
+      <div className={cn("flex items-center justify-center min-h-screen", className)} {...props}>
+        <form
+          onSubmit={(e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             handleSubmit(formData);
-          }}>
-            <p>
-              <label htmlFor="id_username">Username:</label>
-              <input required type="text" name="username" id="id_username" value={formData.username} onChange={handleChange}/>
-            </p>
-            <p>
-              <label htmlFor="id_password">Password:</label>
-              <input required type="password" name="password" id="id_password" value={formData.password} onChange={handleChange}/>
-            </p>
-            <Button disabled={isSubmitting}>{ isSubmitting ? "Signing in..." : "Login"}</Button>
-            <Button variant="outline">Boop</Button>
-            <input type="hidden" name="next" value="/users/dashboard/"/>
-          </form>
-          <p>
-            Don't have an account? <a href="/users/register/">Register here</a>.
-          </p>
-        </div>
-    );
+          }}
+          className="w-full max-w-md p-8 flex flex-col gap-6 -translate-y-27"
+        >
+          <div className="flex flex-col items-center gap-2 text-center">
+            <div className="flex size-8 items-center justify-center rounded-md">
+              <Bot className="size-8" />
+            </div>
+            <h1 className="text-xl font-bold"> Welcome </h1>
+            <FieldDescription>
+              PLACEHOLDER
+            </FieldDescription>
+          </div>
+          <Field>
+            <FieldLabel htmlFor="username">Username</FieldLabel>
+            <Input required type="text" id="username" name="username" value={formData.username} onChange={handleChange} />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="password">Password</FieldLabel>
+            <Input required type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
+          </Field>
+          <Button type="submit">Login</Button>
+        </form>
+      </div>
+    )
 }
 
 export default LoginPage;
