@@ -4,6 +4,7 @@ import PrivateRoutes from './auth/PrivateRoutes'
 import DarkMode from './components/DarkMode'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="*" element={<Navigate to="/"/>}/>
           </Route>
           <Route path="/login" element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
         </Routes>
       </Router>
     </AuthProvider>

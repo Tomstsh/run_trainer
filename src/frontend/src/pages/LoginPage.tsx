@@ -1,6 +1,6 @@
 import { Bot } from "lucide-react";
 import { ChangeEvent, FormEvent, ComponentProps, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -57,10 +57,7 @@ function LoginPage({
             <div className="flex size-8 items-center justify-center rounded-md">
               <Bot className="size-8" />
             </div>
-            <h1 className="text-xl font-bold"> Welcome </h1>
-            <FieldDescription>
-              PLACEHOLDER
-            </FieldDescription>
+            <h1 className="text-xl font-bold"> Welcome to Run Trainer</h1>
           </div>
           <Field>
             <FieldLabel htmlFor="username">Username</FieldLabel>
@@ -71,6 +68,9 @@ function LoginPage({
             <Input required type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
           </Field>
           <Button type="submit">Login</Button>
+          <FieldDescription className="text-center">
+            Want to create an account? <Link to="/register" className="text-primary hover:underline">Sign up</Link>
+          </FieldDescription>
         </form>
       </div>
     )
