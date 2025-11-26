@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import {
   Card,
   CardContent,
@@ -15,7 +15,8 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
+import { FormEvent, useState } from "react"
+import axios from "axios"
 
 export function SignupForm({
   className,
@@ -36,6 +37,25 @@ export function SignupForm({
     });
   }
 
+  const navigate = useNavigate();
+
+  const handleSubmit = async (data: { username: string; password: string; confirmPassword: string; }) => {
+    console.log(data);
+    if (data.password !== data.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+    try {
+      await axios.post('/users/register/', {
+        username: data.username,
+        password: data.password
+      });
+      navigate('/login');
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="-translate-y-27">
@@ -46,7 +66,10 @@ export function SignupForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={(e: FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            handleSubmit(formData);
+          }}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="username">Username</FieldLabel>
@@ -62,13 +85,13 @@ export function SignupForm({
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>
                     <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <Input id="password" name="password" type="password" required />
+                    <Input id="password" name="password" type="password" value={formData.password} onChange={handleChange} required />
                   </Field>
                   <Field>
                     <FieldLabel htmlFor="confirm-password">
                       Confirm Password
                     </FieldLabel>
-                    <Input id="confirm-password" name="confirmPassword" type="password" required />
+                    <Input id="confirm-password" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} required />
                   </Field>
                 </Field>
               </Field>
