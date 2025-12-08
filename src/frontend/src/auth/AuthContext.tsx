@@ -20,12 +20,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const token = localStorage.getItem('access_token');
-        if (token) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            setUser({ ...user, isAuthenticated: true });
+
+        if (!token) {
+            setLoading(false);
+            return;
         }
-        setLoading(false);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        async function fetchData() {
+            try {
+                const userResponse = await axios.get('/users/get_user_data/');
+                const userData = userResponse.data;
+
+                setUser({ ...userData, isAuthenticated: true });
+            } catch (err) {
+                console.error(err);
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchData();
     }, []);
+
 
     const login = async (username: string, password: string) => {
         try {
@@ -34,7 +52,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             localStorage.setItem('access_token', access);
             localStorage.setItem('refresh_token', refresh);
             axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
-            setUser({ username: username, isAuthenticated: true });
+            
+            const userResponse = await axios.get('/users/get_user_data/');
+            const userData = userResponse.data;
+            setUser({ ...userData, isAuthenticated: true });
             return true;
         } catch (error) {
             console.error("Login failed:", error);

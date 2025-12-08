@@ -24,6 +24,10 @@ class CustomUserViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def create_user_profile(request):
+    user_profile_data = request.data
+    user_id = request.user.id
+
+    user_profile_data['user'] = user_id
     serialized = UserProfileSerializer(data=request.data)
     if serialized.is_valid():
         serialized.save()
@@ -31,14 +35,9 @@ def create_user_profile(request):
     else:
         return Response(serialized.errors, status=400)
 
-@api_view(['POST'])
+@api_view(['GET'])
 def get_user_data(request):
-    user_id = request.data.get('user_id')
-
-    try:
-        user = CustomUser.objects.get(id=user_id)
-    except CustomUser.DoesNotExist:
-        return Response({'error': f'User not found: {user_id}'}, status=404)
+    user = request.user
     
     try:
         profile = UserProfile.objects.get(user=user)
