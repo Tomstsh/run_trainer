@@ -2,6 +2,9 @@
 services:
   run_trainer:
     build: .
+    env_file:
+      - .env
+      - .private-env
 
     volumes:
        
