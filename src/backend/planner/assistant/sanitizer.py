@@ -37,16 +37,16 @@ Your responsibilities:
 If the text contains *no relevant information at all*, return an empty string.
 """
 
-prompt = """
+prompt_template = """
     Relevant field: {relevant_field}
     User input: {user_input}
 """
 
 
 def sanitize(rel_field, u_input):
-    raw_message = prompt.format(relevant_field=rel_field, user_input=u_input)
+    raw_message = prompt_template.format(relevant_field=rel_field, user_input=u_input)
     cleaned = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-2.5-flash-lite",
         contents=raw_message,
         config=GenerateContentConfig(
             system_instruction=[system_message]
