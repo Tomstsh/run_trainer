@@ -5,6 +5,15 @@ from rest_framework import permissions, viewsets
 from .models import CustomUser, UserProfile
 from .serializers import CustomUserSerializer, UserProfileSerializer, UserDataSerializer
 
+def _get_user_profile_for_user(user, serialized=False):
+    try:
+        profile = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        return None
+    if serialized:
+        profile = UserProfileSerializer(profile).data
+    return profile
+
 # Create your views here.
 
 @api_view(['POST'])
@@ -38,11 +47,6 @@ def create_user_profile(request):
 @api_view(['GET'])
 def get_user_data(request):
     user = request.user
-    
-    try:
-        profile = UserProfile.objects.get(user=user)
-    except UserProfile.DoesNotExist:
-        profile = None
-    
+    profile = _get_user_profile_for_user(user)
     serialized = UserDataSerializer({ 'user': user, 'profile': profile })
     return Response(serialized.data, status=200)

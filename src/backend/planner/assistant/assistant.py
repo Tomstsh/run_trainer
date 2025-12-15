@@ -62,7 +62,7 @@ You MUST return data in the following JSON structure:
     }
   ],
   "user_injury_history": <injury_history>,
-  "user_medical_history": <medical_history>,
+  "user_medical_conditions": <medical_conditions>,
   "race_goals": <race_goals>
   "training_plan_notes": <any notes, recommendations or things to look out for for the individual using this plan>
 }
@@ -99,7 +99,7 @@ Weight in kg: {weight_kg}
 Fitness level: {fitness_level}
 Running experience: {running_experience}
 Injury history: {injury_history}
-Medical history: {medical_history}
+Medical history: {medical_conditions}
 
 =========================
 RACE INFORMATION
@@ -109,9 +109,9 @@ Race distance: {race_distance}
 Race goals: {race_goals}
 """
 
-def create_training_plan(document):
+def generate_plan(document):
 
-    raw_fields = document.get("raw_fields")
+    raw_fields = document.pop("raw_fields")
 
     for field in raw_fields:
         cleaned = sanitizer.sanitize(field['description'], field['raw'])
@@ -125,5 +125,5 @@ def create_training_plan(document):
             system_instruction=[system_message]
         )
     )
-    return json.loads(response.text)
+    return document, json.loads(response.text)
 
