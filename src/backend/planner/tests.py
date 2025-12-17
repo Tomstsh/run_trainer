@@ -88,7 +88,6 @@ class AssistantAPITests(APITestCase):
             "race_distance": 42,
             "race_goals": "I am pregnant, I broke my toe and I want to finish my first marathon in less than 5 hours"
         }
-
         response = self.client.post(reverse("create_training_plan"),
             race_data,
             format="json",

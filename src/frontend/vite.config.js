@@ -22,6 +22,7 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:80',
       '/users': 'http://localhost:80',
+      '/planner': 'http://localhost:80'
     },
     watch:{
       usePolling: true

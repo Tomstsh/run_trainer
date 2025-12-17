@@ -8,12 +8,14 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-export function DOB({ date, onSelect }) {
+export function DateSelector({ ...props }) {
     const [open, setOpen] = React.useState(false)
+
+    const { date, onSelect, label } = props
     return (
         <div className="flex flex-col gap-3 pt-4">
             <Label htmlFor="date" className="px-1">
-                Date of birth
+                {label}
             </Label>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>

@@ -11,3 +11,6 @@ Directory containing the React used for the frontend. Static files built with vi
 
 ## ./src/backend
 Backend Django API built using Django Rest Framework.
+
+
+ADD ability for devs to add packages without having to bash in

@@ -2,7 +2,7 @@ import { useAuth } from "../auth/AuthContext"
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter } from '../components/ui/alert-dialog';
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { DOB } from './ui/dob';
+import { DateSelector } from './ui/date-selector';
 import { Input } from './ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
@@ -36,7 +36,6 @@ export function ProfileQuestions ({ className, ...props}) {
 
     const handleSubmit = async () => {
         try {
-            const user_id = user.user.id
             const {   
                 sex,
                 dateOfBirth,
@@ -83,7 +82,7 @@ export function ProfileQuestions ({ className, ...props}) {
                     <AlertDialogTitle>What's your date of birth?</AlertDialogTitle>
                 </AlertDialogHeader>
                     {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1">{errors.dateOfBirth}</p>}
-                <DOB date={profileData.dateOfBirth} onSelect={(date) => {
+                <DateSelector label="Date of birth" date={profileData.dateOfBirth} onSelect={(date) => {
                     setErrors({})
                     if ( !date ) return
                     const result = dobSchema.safeParse({ dateOfBirth: date})
@@ -97,7 +96,7 @@ export function ProfileQuestions ({ className, ...props}) {
                         setErrors(fieldErrors);
                         return;
                     }
-                    const e = { target: { name: "dateOfBirth", value: date}}
+                        const e = { target: { name: "dateOfBirth", value: date } } as React.ChangeEvent<HTMLInputElement>
                     handleChange(e)
                     }}/>
                 </div>
@@ -111,10 +110,13 @@ export function ProfileQuestions ({ className, ...props}) {
                 <AlertDialogHeader className="pb-4">
                     <AlertDialogTitle>What's your sex?</AlertDialogTitle>
                 </AlertDialogHeader>
-                <Select onValueChange={(value) => {
-                    const  e = { target: { name: "sex", value }}
-                    handleChange(e)
-                }}>
+                <Select onValueChange={(value) => handleChange({
+                    target: {
+                        name: "sex",
+                        value
+                    }
+                    } as React.ChangeEvent<HTMLInputElement>
+                )}>
                     <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="Please select your sex"/>
                     </SelectTrigger>
@@ -161,10 +163,13 @@ export function ProfileQuestions ({ className, ...props}) {
                     <AlertDialogHeader className="pb-4">
                         <AlertDialogTitle>How would you rate your general fitness level?</AlertDialogTitle>
                     </AlertDialogHeader>
-                    <RadioGroup className="flex items-center gap-4" onValueChange={(value) => {
-                        const e = { target: { name: "fitnessLevel", value } }
-                        handleChange(e)
-                    }}>
+                    <RadioGroup className="flex items-center gap-4" onValueChange={(value) => handleChange({
+                        target: {
+                            name: "fitnessLevel",
+                            value
+                        }
+                    } as React.ChangeEvent<HTMLInputElement>
+                    )}>
                         <div className="flex items-center gap-2">
                             <RadioGroupItem id='beginner' value="B"/>
                             <Label htmlFor="beginner">Beginner</Label>
@@ -193,10 +198,13 @@ export function ProfileQuestions ({ className, ...props}) {
                     <AlertDialogHeader className="pb-4">
                         <AlertDialogTitle>How would you rate your running experience?</AlertDialogTitle>
                     </AlertDialogHeader>
-                    <RadioGroup className="flex items-center gap-4" onValueChange={(value) => {
-                        const e = { target: { name: "runningExperience", value } }
-                        handleChange(e)
-                    }}>
+                    <RadioGroup className="flex items-center gap-4" onValueChange={(value) => handleChange({
+                        target: {
+                            name: "runningExperience",
+                            value
+                        }
+                    } as React.ChangeEvent<HTMLInputElement>
+                    )}>
                         <div className="flex items-center gap-2">
                             <RadioGroupItem id='beginner' value="B" />
                             <Label htmlFor="beginner">Beginner</Label>
