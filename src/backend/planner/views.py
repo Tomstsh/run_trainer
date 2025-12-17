@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from users.views import _get_user_profile_for_user
 from .assistant import assistant
 from .models import TrainingPlan
+from .serializers import TrainingPlanSerializer, TrainingPlanListSerializer
 
 def _create_training_plan(user, race_data):
     ## TODO CLEAN THIS
@@ -38,3 +39,23 @@ def create_training_plan(request):
 
     _create_training_plan(user, race_data)
     return Response({"create_training_plan": "success"}, status=200)
+
+@api_view(['GET'])
+def list_training_plans(request):
+    user = request.user
+    plans = TrainingPlan.objects.filter(user=user).order_by('-creation_date')
+
+    serialized = TrainingPlanListSerializer(plans, many=True)
+    return Response(serialized.data, status=200)
+
+@api_view(['POST'])
+def get_training_plan(request):
+    plan_id = request.data.get("plan_id")
+
+    try:
+        plan = TrainingPlan.objects.get(id=plan_id)
+    except TrainingPlan.DoesNotExist:
+        return Response({"error": "Training plan not found"}, status=404)
+    
+    serialized = TrainingPlanSerializer(plan)
+    return Response(serialized.data, status=200)

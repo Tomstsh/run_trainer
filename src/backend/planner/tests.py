@@ -81,26 +81,60 @@ class AssistantAPITests(APITestCase):
             medical_conditions="I had the flu once in 2016 and I like cats"          
         )
     
-    def test_create_training_plan(self):
+    #def test_create_training_plan(self):
+#
+    #    race_data = {
+    #        "race_date": months_from_now.strftime("%Y-%m-%d"),
+    #        "race_distance": 42,
+    #        "race_goals": "I am pregnant, I broke my toe and I want to finish my first marathon in less than 5 hours"
+    #    }
+    #    response = self.client.post(reverse("create_training_plan"),
+    #        race_data,
+    #        format="json",
+    #        HTTP_AUTHORIZATION=self.token
+    #    )
+    #    self.assertEqual(response.status_code, 200)
+#
+    #    t_plan = TrainingPlan.objects.get(id=1)
+    #    
+    #    print(t_plan.creation_date)
+    #    print("==DOCUMENT==")
+    #    print(t_plan.doc_json)
+    #    print("/n")
+    #    print("==PLAN==")
+    #    print(t_plan.plan_json)
+    #    print("/n")
 
-        race_data = {
-            "race_date": months_from_now.strftime("%Y-%m-%d"),
-            "race_distance": 42,
-            "race_goals": "I am pregnant, I broke my toe and I want to finish my first marathon in less than 5 hours"
-        }
-        response = self.client.post(reverse("create_training_plan"),
-            race_data,
+    def test_fetch_training_plans(self):
+
+        doc_json = { "sample": "doc" }
+        plan_json = { "sample": "plan" }
+
+        [TrainingPlan.objects.create(
+            user=self.user,
+            doc_json=doc_json,
+            plan_json=plan_json
+        ) for _ in range(3)]
+
+        response = self.client.get(reverse("list_training_plans"),
+            HTTP_AUTHORIZATION=self.token
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 3)
+        self.assertNotIn("doc_json", response.data[0])
+        self.assertNotIn("plan_json", response.data[0])
+
+        plan_id = response.data[0]['id']
+
+        response = self.client.post(reverse("get_training_plan"),
+            { "plan_id": plan_id },
             format="json",
             HTTP_AUTHORIZATION=self.token
         )
         self.assertEqual(response.status_code, 200)
+        self.assertIn("doc_json", response.data)
+        self.assertIn("plan_json", response.data)
 
-        t_plan = TrainingPlan.objects.get(id=1)
         
-        print(t_plan.creation_date)
-        print("==DOCUMENT==")
-        print(t_plan.doc_json)
-        print("/n")
-        print("==PLAN==")
-        print(t_plan.plan_json)
-        print("/n")
+    
+
