@@ -33,6 +33,7 @@ export function DateSelector({ ...props }) {
                         mode="single"
                         selected={date}
                         captionLayout="dropdown"
+                        toYear={new Date().getFullYear() + 5}
                         onSelect={(date) => {
                             onSelect(date)
                             setOpen(false)

@@ -52,8 +52,6 @@ export function TrainingPlanForm() {
         }
     }
 
-    console.log(formData)
-
     return (
         <Dialog>
             <DialogTrigger asChild>

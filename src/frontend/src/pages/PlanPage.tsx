@@ -10,10 +10,6 @@ export function PlanPage() {
     const [plan, setPlan] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    console.log(plan)
-    console.log(error)
-
     useEffect(() => {
         async function fetchPlan() {
             try {
