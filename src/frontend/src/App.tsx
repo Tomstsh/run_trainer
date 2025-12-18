@@ -5,6 +5,7 @@ import DarkMode from './components/DarkMode'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import { PlanPage } from './pages/PlanPage'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<HomePage/>}/>
+            <Route path="/plans/:plan_id" element={<PlanPage/>}/>
             <Route path="*" element={<Navigate to="/"/>}/>
           </Route>
           <Route path="/login" element={<LoginPage />} />
